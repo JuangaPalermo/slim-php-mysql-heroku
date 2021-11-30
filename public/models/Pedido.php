@@ -292,9 +292,9 @@ class Pedido{
             public static function verificarPedidoListo($pedidoCodigo)
             {
                 $objAccesoDatos = AccesoDatos::obtenerInstancia();
-                $consulta = $objAccesoDatos->prepararConsulta("SELECT * FROM pedido
+                $consulta = $objAccesoDatos->prepararConsulta("SELECT pedidoCodigo, pedidoEstado FROM pedido
                                                                WHERE pedidoCodigo = :pedidoCodigo
-                                                               GROUP BY pedidoCodigo, pedidoEstado, pedidoMesaID");
+                                                               GROUP BY pedidoEstado");
                 $consulta->bindValue(':pedidoCodigo', $pedidoCodigo, PDO::PARAM_INT);
                 if(!$consulta->execute()){
                     throw new Exception("Error al realizar la consulta.");
