@@ -54,6 +54,9 @@ class AutentificadorJWT
 
     public static function ObtenerData($token)
     {
+        if (empty($token)) {
+            throw new Exception("El token esta vacio.");
+        }
         return JWT::decode(
             $token,
             self::$claveSecreta,

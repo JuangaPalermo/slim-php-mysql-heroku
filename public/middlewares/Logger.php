@@ -18,6 +18,9 @@ class Logger
                     $payload = AutentificadorJWT::ObtenerData($token);
                 } catch (Exception $e) {
                     $payload = json_encode(array('error' => $e->getMessage()));
+                    $response = new Response();
+                    $response->getBody()->write($payload);
+                    return $response->withHeader('Content-Type', 'application/json');
                 }
 
                 if($payload->perfil == 'socio'){
@@ -55,6 +58,9 @@ class Logger
                     $payload = AutentificadorJWT::ObtenerData($token);
                 } catch (Exception $e) {
                     $payload = json_encode(array('error' => $e->getMessage()));
+                    $response = new Response();
+                    $response->getBody()->write($payload);
+                    return $response->withHeader('Content-Type', 'application/json');
                 }
                 
                 if($payload->perfil == 'mozo'){
@@ -91,6 +97,9 @@ class Logger
                     $payload = AutentificadorJWT::ObtenerData($token);
                 } catch (Exception $e) {
                     $payload = json_encode(array('error' => $e->getMessage()));
+                    $response = new Response();
+                    $response->getBody()->write($payload);
+                    return $response->withHeader('Content-Type', 'application/json');
                 }
 
                 if($payload->perfil == 'bartender' || $payload->perfil == 'cervecero' || $payload->perfil == 'cocinero'){
