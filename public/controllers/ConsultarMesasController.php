@@ -1,6 +1,6 @@
 <?php
 
-include_once '.\models\Mesa.php';
+require_once '.\models\Mesa.php';
 
 class ConsultarMesasController {
 
