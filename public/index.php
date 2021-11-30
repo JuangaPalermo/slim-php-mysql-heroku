@@ -145,7 +145,7 @@ $app->group('/mozos', function (RouteCollectorProxy $group) {
 
 
 $app->get('[/]', function (Request $request, Response $response) {    
-  $response->getBody()->write("Slim Framework 4 PHP");
+  $response->getBody()->write("LA COMANDA - JUAN GABRIEL PALERMO");
   return $response;
 });
 
