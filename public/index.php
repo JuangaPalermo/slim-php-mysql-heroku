@@ -1,12 +1,18 @@
 <?php
+// Error Handling
+error_reporting(-1);
+ini_set('display_errors', 1);
+
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
-use Slim\Factory\AppFactory;
 use Psr\Http\Server\RequestHandlerInterface;
+use Slim\Factory\AppFactory;
 use Slim\Routing\RouteCollectorProxy;
 use Slim\Routing\RouteContext;
 
 require __DIR__ . '/../vendor/autoload.php';
+
+require_once './db/AccesoDatos.php';
 require_once './middlewares/AutentificadorJWT.php';
 require_once './middlewares/Logger.php';
 
@@ -32,18 +38,21 @@ require_once './controllers/ConsultarMesasController.php';
 require_once './controllers/MejoresComentariosController.php';
 require_once './controllers/MesaMasUsadaController.php';
 
-
-require_once './db/AccesoDatos.php';
-
+// Load ENV
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
-$dotenv->load();
+$dotenv->safeLoad();
 
+// Instantiate App
 $app = AppFactory::create();
+
+// Add error middleware
+$app->addErrorMiddleware(true, true, true);
+
+// Add parse body
+$app->addBodyParsingMiddleware();
+
 // se lo puedo sacar para pegarle directamente a localhost/ en vez de tener que poner el public despues
 // $app->setBasePath('/public');
-$app->addRoutingMiddleware();
-
-$errorMiddleware = $app->addErrorMiddleware(true, true, true);
 
 //setting timezone a Buenos Aires
 date_default_timezone_set("America/Argentina/Buenos_Aires");
@@ -133,6 +142,12 @@ $app->group('/mozos', function (RouteCollectorProxy $group) {
   //COBRAR PEDIDO
   $group->put('/pedidos/cobrar', \CobrarPedidoController::class . ':CobrarPedido');
 })->add(\Logger::class . ':VerificadorMozo');
+
+
+$app->get('[/]', function (Request $request, Response $response) {    
+  $response->getBody()->write("Slim Framework 4 PHP");
+  return $response;
+});
 
 
 // para no tener problemas con el put y delete
